@@ -1,7 +1,9 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import classes from "./AuthForm.module.css";
+import AuthContext from "../Context/AuthContext";
 
 const AuthForm = () => {
+  const context = useContext(AuthContext);
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setloading] = useState(false);
   const emailRef = useRef();
@@ -42,6 +44,9 @@ const AuthForm = () => {
         throw new Error(data.error.message);
       } else {
         console.log(data);
+        context.login(data.idToken);
+        localStorage.setItem("IdToken", JSON.stringify(data.idToken));
+        console.log(context);
       }
 
       // Signup successful, handle further actions like redirecting
