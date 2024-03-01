@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import AuthContext from "./AuthContext";
 const AuthContextProvider = (props) => {
-  const intialtoken = localStorage.getItem("IdToken");
-
+  let intialtoken = localStorage.getItem("IdToken");
   const [token, settoken] = useState(intialtoken);
   const userLoggedIn = !!token;
+  if (userLoggedIn) {
+    setTimeout(() => {
+      settoken(null);
+      localStorage.clear();
+    }, 300000);
+  }
   const loginHandler = (token) => {
     settoken(token);
   };
