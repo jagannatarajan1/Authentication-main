@@ -2,14 +2,18 @@ import { Link } from "react-router-dom";
 
 import classes from "./MainNavigation.module.css";
 import { useContext } from "react";
+
 import AuthContext from "../Context/AuthContext";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const MainNavigation = (props) => {
   const context = useContext(AuthContext);
+  const history = useHistory();
   const login = context.isLoggedIn;
   const logoutHandler = () => {
     context.logout();
     localStorage.clear();
+    history.replace("/auth");
   };
 
   return (
@@ -21,7 +25,11 @@ const MainNavigation = (props) => {
         <ul>
           <li>{!login && <Link to="/auth">Login</Link>}</li>
           <li>{login && <Link to="/profile">Profile</Link>}</li>
-          <li>{login && <button onClick={logoutHandler}>Logout</button>}</li>
+          <li>
+            {login && <Link to="/auth">Login</Link> && (
+              <button onClick={logoutHandler}>Logout</button>
+            )}
+          </li>
         </ul>
       </nav>
     </header>
